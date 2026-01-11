@@ -1,554 +1,300 @@
 <!DOCTYPE html>
 <html lang="vi" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VNRP — Roblox Roleplay Community</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VNRP — Roblox Roleplay Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<style>
+:root {
+    --bg-body: #020617;
+    --bg-surface: #0f172a;
+    --bg-glass: rgba(15, 23, 42, 0.7);
+    --bg-input: rgba(255, 255, 255, 0.05);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --accent-primary: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.4);
+    --particle-color: rgba(255, 255, 255, 0.5);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --font-sans: 'Inter', sans-serif;
+}
+[data-theme="light"] {
+    --bg-body: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-glass: rgba(255, 255, 255, 0.85);
+    --bg-input: #f1f5f9;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: rgba(0,0,0,0.1);
+    --accent-primary: #0284c7;
+    --accent-glow: rgba(2,132,199,0.2);
+    --particle-color: rgba(0,0,0,0.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background-color:var(--bg-body);color:var(--text-main);font-family:var(--font-sans);overflow-x:hidden;transition:background-color 0.5s ease,color 0.3s ease;display:flex;flex-direction:column;min-height:100vh;}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;}
+.btn{padding:10px 24px;border-radius:10px;font-weight:600;cursor:pointer;transition:all 0.2s;border:none;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;}
+.btn-primary{background:var(--text-main);color:var(--bg-body);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 15px var(--accent-glow);}
+.btn-glass{background:var(--bg-input);color:var(--text-main);border:1px solid var(--border-color);}
+.btn-glass:hover{background:var(--border-color);}
+.select-ui{background:var(--bg-input);border:1px solid var(--border-color);color:var(--text-main);padding:8px 12px;border-radius:8px;outline:none;cursor:pointer;}
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.8s var(--ease-smooth);}
+.reveal.active{opacity:1;transform:translateY(0);}
+header{position:fixed;top:0;width:100%;z-index:100;background:var(--bg-glass);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-color);padding:16px 0;}
+nav{display:flex;justify-content:space-between;align-items:center;}
+.logo{font-weight:900;font-size:24px;color:var(--accent-primary);}
+.nav-controls{display:flex;gap:10px;align-items:center;}
+#main-content{flex:1;padding-top:60px;}
+.hero{min-height:90vh;display:flex;align-items:center;justify-content:center;text-align:center;}
+.hero h1{font-size:clamp(32px,6vw,64px);line-height:1.1;margin-bottom:20px;}
+.hero p{color:var(--text-muted);max-width:600px;margin:0 auto 30px;font-size:18px;}
+.inline-comment-section{max-width:650px;width:90%;margin:40px auto 0;background:var(--bg-surface);border-radius:15px;overflow:hidden;border:1px solid var(--border-color);box-shadow:0 10px 30px rgba(0,0,0,0.2);text-align:left;padding:0;}
+.inline-comments-header{padding:12px 16px;border-bottom:1px solid var(--border-color);font-size:1.1rem;font-weight:600;}
+.inline-comments-list{max-height:250px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px;}
+.inline-comments-input{padding:16px;border-top:1px solid var(--border-color);display:flex;gap:10px;background:var(--bg-input);}
+.inline-comments-input .c-input{flex:1;background:var(--bg-surface);border:1px solid var(--border-color);padding:10px;border-radius:20px;color:var(--text-main);outline:none;}
+.comment-item{display:flex;gap:12px;}
+.avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--accent-primary),#818cf8);display:grid;place-items:center;font-weight:bold;color:#fff;font-size:14px;}
+.c-content{flex:1;}
+.c-name{font-weight:600;font-size:13px;color:var(--text-muted);margin-bottom:2px;}
+.c-text{font-size:14px;line-height:1.4;color:var(--text-main);}
+.c-actions{display:flex;gap:15px;margin-top:5px;font-size:12px;}
+.c-action-btn{background:none;border:none;color:var(--text-muted);cursor:pointer;transition:color 0.2s;display:flex;align-items:center;gap:4px;}
+.c-action-btn:hover{color:var(--accent-primary);}
+.c-action-btn .material-icons{font-size:16px;}
+.replies-container{border-left:2px solid var(--border-color);padding-left:10px;margin-top:10px;display:flex;flex-direction:column;gap:10px;}
+.reply-form{margin-top:10px;padding:10px;border:1px solid var(--border-color);border-radius:10px;display:none;}
+.reply-form.active{display:flex;gap:10px;}
+.reply-form input[type="text"]{flex:1;padding:8px;border:1px solid var(--border-color);border-radius:8px;background:var(--bg-input);color:var(--text-main);}
+@media (max-width:768px){
+.inline-comment-section{max-width:90%;width:95%;}
+.inline-comments-list{max-height:200px;}
+.inline-comments-input{flex-direction:column;gap:8px;}
+.inline-comments-input .c-input{width:100%;}
+.inline-comments-input button.btn-primary{width:100%;}
+}
 
-    <style>
-        /* --- 1. VARIABLES & THEME --- */
-        :root {
-            --bg-body: #020617;
-            --bg-surface: #0f172a;
-            --bg-glass: rgba(15, 23, 42, 0.7);
-            --bg-input: rgba(255, 255, 255, 0.05);
-            
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
+footer{background:var(--bg-surface);border-top:1px solid var(--border-color);padding:40px 0 20px;margin-top:auto;text-align:center;position:relative;z-index:10;}
+.footer-contacts h3{font-size:18px;font-weight:700;margin-bottom:16px;color:var(--text-main);}
+.footer-contacts p{margin:8px 0;color:var(--text-muted);font-size:15px;}
+.footer-contacts a{color:var(--accent-primary);text-decoration:none;transition:0.2s;}
+.footer-contacts a:hover{text-decoration:underline;text-shadow:0 0 10px var(--accent-glow);}
+.copyright{margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);color:var(--text-muted);font-size:13px;opacity:0.8;}
 
-            --accent-primary: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.4);
-            
-            --particle-color: rgba(255, 255, 255, 0.5);
-            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-            --font-sans: 'Inter', sans-serif;
-        }
-
-        [data-theme="light"] {
-            --bg-body: #f8fafc;
-            --bg-surface: #ffffff;
-            --bg-glass: rgba(255, 255, 255, 0.85);
-            --bg-input: #f1f5f9;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --accent-primary: #0284c7;
-            --accent-glow: rgba(2, 132, 199, 0.2);
-            --particle-color: rgba(0, 0, 0, 0.3);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            font-family: var(--font-sans);
-            overflow-x: hidden;
-            transition: background-color 0.5s ease, color 0.3s ease;
-            display: flex; flex-direction: column; min-height: 100vh;
-        }
-
-        /* --- 2. UTILITIES --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        
-        .btn {
-            padding: 10px 24px; border-radius: 10px; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; border: none; display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
-        }
-        .btn-primary { background: var(--text-main); color: var(--bg-body); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--accent-glow); }
-        
-        .btn-glass { background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border-color); }
-        .btn-glass:hover { background: var(--border-color); }
-
-        .select-ui {
-            background: var(--bg-input); border: 1px solid var(--border-color);
-            color: var(--text-main); padding: 8px 12px; border-radius: 8px; outline: none; cursor: pointer;
-        }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s var(--ease-smooth); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* --- 3. HEADER --- */
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 100;
-            background: var(--bg-glass); backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color); padding: 16px 0;
-        }
-        nav { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 900; font-size: 24px; color: var(--accent-primary); }
-        .nav-controls { display: flex; gap: 10px; align-items: center; }
-
-        /* --- 4. CONTENT --- */
-        #main-content { flex: 1; padding-top: 60px; }
-
-        .hero { min-height: 90vh; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .hero h1 { font-size: clamp(32px, 6vw, 64px); line-height: 1.1; margin-bottom: 20px; }
-        .hero p { color: var(--text-muted); max-width: 600px; margin: 0 auto 30px; font-size: 18px; }
-
-        /* --- INLINE COMMENT SECTION --- */
-        .inline-comment-section {
-            max-width: 650px; 
-            width: 90%; 
-            margin: 40px auto 0;
-            background: var(--bg-surface);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-align: left;
-            padding: 0;
-        }
-        .inline-comments-header {
-            padding: 12px 16px; 
-            border-bottom: 1px solid var(--border-color);
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        .inline-comments-list { 
-            max-height: 250px; 
-            overflow-y: auto; 
-            padding: 16px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 16px; 
-        }
-        .inline-comments-input { 
-            padding: 16px; 
-            border-top: 1px solid var(--border-color); 
-            display: flex; 
-            gap: 10px; 
-            background: var(--bg-input);
-        }
-        .inline-comments-input .c-input { 
-            flex: 1; 
-            background: var(--bg-surface); 
-            border: 1px solid var(--border-color); 
-            padding: 10px; 
-            border-radius: 20px; 
-            color: var(--text-main); 
-            outline: none; 
-        }
-        
-        /* Style bình luận */
-        .comment-item { display: flex; gap: 12px; }
-        .avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--accent-primary), #818cf8); display: grid; place-items: center; font-weight: bold; color: #fff; font-size: 14px; }
-        .c-content { flex: 1; } .c-name { font-weight: 600; font-size: 13px; color: var(--text-muted); margin-bottom: 2px; } .c-text { font-size: 14px; line-height: 1.4; color: var(--text-main); }
-        .c-actions { display: flex; gap: 15px; margin-top: 5px; font-size: 12px; }
-        .c-action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: color 0.2s; display: flex; align-items: center; gap: 4px; }
-        .c-action-btn:hover { color: var(--accent-primary); }
-        .c-action-btn .material-icons { font-size: 16px; }
-        .replies-container { border-left: 2px solid var(--border-color); padding-left: 10px; margin-top: 10px; display: flex; flex-direction: column; gap: 10px; }
-        .reply-item { margin-left: 20px; display: flex; gap: 10px; font-size: 0.9em; }
-        .reply-form { margin-top: 10px; padding: 10px; border: 1px solid var(--border-color); border-radius: 10px; display: none; }
-        .reply-form.active { display: flex; gap: 10px; }
-        .reply-form input[type="text"] { flex: 1; padding: 8px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-input); color: var(--text-main); }
-
-        /* TỐI ƯU HÓA MOBILE (NGẮT DÒNG NÚT GỬI) */
-        @media (max-width: 768px) {
-            .inline-comment-section {
-                max-width: 90%; 
-                width: 95%;
-            }
-            .inline-comments-list {
-                max-height: 200px;
-            }
-
-            .inline-comments-input {
-                flex-direction: column; /* Xếp các phần tử theo cột */
-                gap: 8px;
-            }
-            .inline-comments-input .c-input {
-                 width: 100%;
-            }
-            .inline-comments-input button.btn-primary {
-                width: 100%; /* Nút Gửi chiếm toàn bộ chiều rộng */
-            }
-        }
-        /* --- KẾT THÚC INLINE COMMENT SECTION --- */
-
-
-        .features { padding: 80px 0; position: relative; z-index: 1; }
-        .section-header { text-align: center; margin-bottom: 50px; }
-        .section-title { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .card {
-            background: var(--bg-surface); border: 1px solid var(--border-color);
-            padding: 30px; border-radius: 20px; transition: transform 0.3s ease, border-color 0.3s;
-        }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent-primary); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .card-icon { font-size: 40px; margin-bottom: 20px; display: block; }
-        .card h3 { font-size: 20px; margin-bottom: 10px; }
-        .card p { color: var(--text-muted); line-height: 1.5; font-size: 15px; }
-
-        /* --- 5. FOOTER --- */
-        footer {
-            background: var(--bg-surface); border-top: 1px solid var(--border-color);
-            padding: 40px 0 20px; margin-top: auto; text-align: center; position: relative; z-index: 10;
-        }
-        .footer-contacts h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); }
-        .footer-contacts p { margin: 8px 0; color: var(--text-muted); font-size: 15px; }
-        .footer-contacts a { color: var(--accent-primary); text-decoration: none; transition: 0.2s; }
-        .footer-contacts a:hover { text-decoration: underline; text-shadow: 0 0 10px var(--accent-glow); }
-        .copyright { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 13px; opacity: 0.8; }
-
-        /* --- 6. MODAL (Hướng Dẫn) --- */
-        .modal-overlay {
-            position: fixed; inset: 0; z-index: 9999; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
-            display: none; 
-            align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease;
-        }
-    </style>
+.modal-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.8);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.3s ease;}
+</style>
 </head>
 <body>
-    <canvas id="particles" style="position: fixed; inset: 0; z-index: -1; pointer-events: none;"></canvas>
+<canvas id="particles" style="position: fixed; inset: 0; z-index: -1; pointer-events: none;"></canvas>
 
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">VNRP</div>
-                <div class="nav-controls">
-                    <select id="theme-select" class="select-ui">
-                        <option value="system">🌓 Auto</option>
-                        <option value="light">☀️ Light</option>
-                        <option value="dark">🌑 Dark</option>
-                    </select>
-                    <select id="lang-select" class="select-ui">
-                        <option value="vi">🇻🇳 VI</option>
-                        <option value="en">🇺🇸 EN</option>
-                    </select>
-                </div>
-            </nav>
+<header>
+<div class="container">
+    <nav>
+        <div class="logo">VNRP</div>
+        <div class="nav-controls">
+            <select id="theme-select" class="select-ui">
+                <option value="system">🌓 Auto</option>
+                <option value="light">☀️ Light</option>
+                <option value="dark">🌑 Dark</option>
+            </select>
+            <select id="lang-select" class="select-ui">
+                <option value="vi">🇻🇳 VI</option>
+                <option value="en">🇺🇸 EN</option>
+            </select>
         </div>
-    </header>
+    </nav>
+</div>
+</header>
 
-    <div id="main-content">
-        <section class="hero reveal active">
-            <div class="container">
-                <h1 data-i18n="heroTitle">Xây dựng câu chuyện<br>của riêng bạn</h1>
-                <p data-i18n="heroDesc">Roleplay đỉnh cao trên Roblox.</p>
-                <div style="display: flex; gap: 12px; justify-content: center;">
-                    <a href="https://www.roblox.com/games/133513702265814/VNRP" target="_blank" class="btn btn-primary">Chơi Ngay</a>
-                    <a href="https://discord.gg/T8aFhtF8ph" target="_blank" class="btn btn-primary" data-i18n="joinDiscord">Tham gia Discord</a>
-                    <button id="btn-guide" class="btn btn-glass" data-i18n="viewWiki">▶ Xem Hướng Dẫn</button>
-                </div>
+<div id="main-content">
+<section class="hero reveal active">
+<div class="container">
+<h1 data-i18n="heroTitle">Xây dựng câu chuyện<br>của riêng bạn</h1>
+<p data-i18n="heroDesc">Roleplay đỉnh cao trên Roblox.</p>
+<div style="display: flex; gap: 12px; justify-content: center;">
+<a href="#" target="_blank" class="btn btn-primary">Chơi Ngay</a>
+<a href="#" target="_blank" class="btn btn-primary" data-i18n="joinDiscord">Tham gia Discord</a>
+<button id="btn-guide" class="btn btn-glass" data-i18n="viewWiki">▶ Xem Hướng Dẫn</button>
+</div>
 
-                <div class="inline-comment-section reveal">
-                    <div class="inline-comments-header" id="inline-comments-title">
-                        Bình luận (0)
-                    </div>
-                    <div class="inline-comments-list" id="inline-comments-list">
-                        </div>
-                    <div class="inline-comments-input">
-                        <input type="text" id="c-name-input" class="c-input" placeholder="Tên của bạn...">
-                        <input type="text" id="c-input" class="c-input" placeholder="Viết bình luận...">
-                        <button class="btn btn-primary" onclick="postComment()">➤</button>
-                    </div>
-                </div>
-                </div>
-        </section>
+<!-- Bình luận -->
+<div class="inline-comment-section reveal">
+<div class="inline-comments-header" id="inline-comments-title">Bình luận (0)</div>
+<div class="inline-comments-list" id="inline-comments-list"></div>
+<div class="inline-comments-input">
+<input type="text" id="c-name-input" class="c-input" placeholder="Tên của bạn...">
+<input type="text" id="c-input" class="c-input" placeholder="Viết bình luận...">
+<button class="btn btn-primary" onclick="postComment()">➤</button>
+</div>
+</div>
+</div>
+</section>
+</div>
 
-        <section class="features">
-            <div class="container">
-                <div class="section-header reveal">
-                    <h2 class="section-title" data-i18n="featureTitle">Tại sao chọn VNRP?</h2>
-                    <p style="color: var(--text-muted)" data-i18n="featureSub">Được thiết kế chuyên sâu.</p>
-                </div>
-                <div class="grid">
-                    <div class="card reveal">
-                        <div class="card-icon">👮</div>
-                        <h3 data-i18n="feat1Title">Nghề nghiệp</h3>
-                        <p data-i18n="feat1Desc">Hệ thống nhiệm vụ đa dạng.</p>
-                    </div>
-                    <div class="card reveal">
-                        <div class="card-icon">🚗</div>
-                        <h3 data-i18n="feat2Title">Phương tiện</h3>
-                        <p data-i18n="feat2Desc">Độ xe chi tiết.</p>
-                    </div>
-                    <div class="card reveal">
-                        <div class="card-icon">🏘️</div>
-                        <h3 data-i18n="feat3Title">Nhà cửa</h3>
-                        <p data-i18n="feat3Desc">Mua nhà và trang trí.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+<footer>
+<div class="container">
+<div class="footer-contacts">
+<h3>Contacts:</h3>
+<p>Phone: <a href="tel:+840343945807">+840343945807</a></p>
+<p>Email: <a href="mailto:mkhoa2102@gmail.com">mkhoa2102@gmail.com</a></p>
+</div>
+<div class="copyright">
+Copyright by mkees
+</div>
+</div>
+</footer>
 
-    <footer>
-        <div class="container">
-            <div class="footer-contacts">
-                <h3>Contacts:</h3>
-                <p>Phone: <a href="tel:+840343945807">+840343945807</a></p>
-                <p>Email: <a href="mailto:mkhoa2102@gmail.com">mkhoa2102@gmail.com</a></p>
-            </div>
-            <div class="copyright">
-                Copyright by mkees
-            </div>
-        </div>
-    </footer>
+<div class="modal-overlay" id="guide-modal">
+<button class="close-modal" onclick="closeGuide()">✕</button>
+<div class="modal-container">
+<div class="modal-video">
+<div style="text-align: center;">
+<div class="play-btn">▶</div>
+<p style="margin-top: 10px; color: rgba(255,255,255,0.7);">Gameplay Preview</p>
+</div>
+</div>
+<div class="modal-comments">
+<div class="comments-header">
+<h3>Bình luận (Modal)</h3>
+</div>
+</div>
+</div>
+</div>
 
-    <div class="modal-overlay" id="guide-modal">
-        <button class="close-modal" onclick="closeGuide()">✕</button>
-        <div class="modal-container">
-            <div class="modal-video">
-                <div style="text-align: center;">
-                    <div class="play-btn">▶</div>
-                    <p style="margin-top: 10px; color: rgba(255,255,255,0.7);">Gameplay Preview</p>
-                </div>
-            </div>
-            <div class="modal-comments">
-                <div class="comments-header">
-                    <h3>Bình luận (Modal)</h3>
-                </div>
-            </div>
-        </div>
-    </div>
+<script>
+// Theme & Language
+const themeSelect = document.getElementById('theme-select');
+const html = document.documentElement;
+function applyTheme(theme){
+    const t = theme==='system'? (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):theme;
+    html.setAttribute('data-theme',t);
+    localStorage.setItem('vnrp_theme',theme);
+}
+themeSelect.addEventListener('change', e=>applyTheme(e.target.value));
+applyTheme(localStorage.getItem('vnrp_theme')||'system');
 
-    <script>
-        // CẤU HÌNH API (Chỉ dùng cho tham khảo, không dùng trong hàm postComment)
-        const API_COMMENTS_URL = "./api.php"; 
+const i18n = {
+vi:{heroTitle:"Xây dựng câu chuyện\ncủa riêng bạn",heroDesc:"Roleplay đỉnh cao trên Roblox.",joinDiscord:"Tham gia Discord",viewWiki:"▶ Xem Hướng Dẫn",featureTitle:"Tại sao chọn VNRP?",featureSub:"Được thiết kế chuyên sâu.",feat1Title:"Nghề nghiệp",feat1Desc:"Hệ thống nhiệm vụ đa dạng.",feat2Title:"Phương tiện",feat2Desc:"Độ xe chi tiết.",feat3Title:"Nhà cửa",feat3Desc:"Mua nhà và trang trí.",commentsTitle:"Bình luận"},
+en:{heroTitle:"Build Your Own\nUnique Story",heroDesc:"Top-tier Roblox Roleplay.",joinDiscord:"Join Discord",viewWiki:"▶ Watch Guide",featureTitle:"Why Choose VNRP?",featureSub:"Designed for depth.",feat1Title:"Careers",feat1Desc:"Diverse missions.",feat2Title:"Vehicles",feat2Desc:"Detailed tuning.",feat3Title:"Housing",feat3Desc:"Buy & decorate.",commentsTitle:"Comments"}
+};
+document.getElementById('lang-select').addEventListener('change', e=>{
+    const l=e.target.value;
+    document.querySelectorAll('[data-i18n]').forEach(el=>el.innerText=i18n[l][el.getAttribute('data-i18n')]||el.innerText);
+});
 
-        // *** LOGIC LIKE VÀ BÌNH LUẬN ***
-        let localComments = []; 
-        // Sử dụng localStorage để giữ số like qua các lần tải trang
-        const localLikes = JSON.parse(localStorage.getItem('vnrp_local_likes')) || {};
+// COMMENTS
+let localComments=[];
+const localLikes=JSON.parse(localStorage.getItem('vnrp_local_likes'))||{};
+const localDislikes=JSON.parse(localStorage.getItem('vnrp_local_dislikes'))||{};
+const cList=document.getElementById('inline-comments-list');
+const cInput=document.getElementById('c-input');
+const cNameInput=document.getElementById('c-name-input');
+const cTitle=document.getElementById('inline-comments-title');
 
+function getNextCommentId(){return Date.now();}
 
-        // --- THEME & LANGUAGE ---
-        const themeSelect = document.getElementById('theme-select');
-        const html = document.documentElement;
-        
-        function applyTheme(theme) {
-            const t = theme === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme;
-            html.setAttribute('data-theme', t);
-            localStorage.setItem('vnrp_theme', theme);
-        }
-        themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
-        applyTheme(localStorage.getItem('vnrp_theme') || 'system');
+function createCommentHTML(comment){
+    const likes=localLikes[comment.id]||comment.likes_count||0;
+    const dislikes=localDislikes[comment.id]||comment.dislikes_count||0;
+    let repliesHTML='';
+    if(comment.replies&&comment.replies.length>0){
+        repliesHTML=`<div class="replies-container">${comment.replies.map(r=>createCommentHTML(r)).join('')}</div>`;
+    }
+    return `
+<div class="comment-item" id="comment-${comment.id}">
+<div class="avatar">${comment.username[0]}</div>
+<div class="c-content">
+<div class="c-name">${comment.username} <span style="font-weight:400;color:var(--text-muted);margin-left:5px;">(${comment.time||'vừa xong'})</span></div>
+<div class="c-text">${comment.content}</div>
+<div class="c-actions">
+<button class="c-action-btn" onclick="handleLike(${comment.id})"><span class="material-icons">thumb_up_alt</span> ${likes}</button>
+<button class="c-action-btn" onclick="handleDislike(${comment.id})"><span class="material-icons">thumb_down_alt</span> ${dislikes}</button>
+<button class="c-action-btn" onclick="openReplyForm(${comment.id},'${comment.username}')"><span class="material-icons">reply</span> Trả lời</button>
+</div>
+<div class="reply-form" id="reply-form-${comment.id}">
+<input type="text" id="reply-name-${comment.id}" placeholder="Tên của bạn..." value="${localStorage.getItem('vnrp_username')||''}">
+<input type="text" id="reply-input-${comment.id}" placeholder="Trả lời @${comment.username}...">
+<button class="btn btn-primary" style="padding:5px 10px;" onclick="postComment(document.getElementById('reply-input-${comment.id}').value,document.getElementById('reply-name-${comment.id}').value,${comment.id})">Gửi</button>
+</div>
+${repliesHTML}
+</div>
+</div>
+`;
+}
 
-        const i18n = {
-            vi: { 
-                heroTitle: "Xây dựng câu chuyện\ncủa riêng bạn", heroDesc: "Roleplay đỉnh cao trên Roblox.", joinDiscord: "Tham gia Discord", viewWiki: "▶ Xem Hướng Dẫn", 
-                featureTitle: "Tại sao chọn VNRP?", featureSub: "Được thiết kế chuyên sâu.", 
-                feat1Title: "Nghề nghiệp", feat1Desc: "Hệ thống nhiệm vụ đa dạng.", 
-                feat2Title: "Phương tiện", feat2Desc: "Độ xe chi tiết.", 
-                feat3Title: "Nhà cửa", feat3Desc: "Mua nhà và trang trí.", 
-                commentsTitle: "Bình luận" 
-            },
-            en: { 
-                heroTitle: "Build Your Own\nUnique Story", heroDesc: "Top-tier Roblox Roleplay.", joinDiscord: "Join Discord", viewWiki: "▶ Watch Guide", 
-                featureTitle: "Why Choose VNRP?", featureSub: "Designed for depth.", 
-                feat1Title: "Careers", feat1Desc: "Diverse missions.", 
-                feat2Title: "Vehicles", feat2Desc: "Detailed tuning.", 
-                feat3Title: "Housing", Poor: "Buy & decorate.", 
-                commentsTitle: "Comments" 
-            }
-        };
-        document.getElementById('lang-select').addEventListener('change', (e) => {
-            const l = e.target.value;
-            document.querySelectorAll('[data-i18n]').forEach(el => el.innerText = i18n[l][el.getAttribute('data-i18n')] || el.innerText);
-        });
+function renderComments(){
+    if(localComments.length===0){
+        localComments=[
+            {id:1,username:"Pro",content:"Server xịn!",time:"2m",likes_count:5,replies:[]},
+            {id:2,username:"Newbie",content:"Xin việc sao?",time:"5m",likes_count:0,replies:[{id:3,username:"Mod",content:"Chat Discord nha!",time:"1m"}]}
+        ];
+    }
+    const savedName=localStorage.getItem('vnrp_username');
+    if(savedName)cNameInput.value=savedName;
+    cTitle.innerText=`Bình luận (${localComments.length})`;
+    cList.innerHTML=localComments.map(createCommentHTML).join('');
+    cList.scrollTop=cList.scrollHeight;
+}
 
-
-        // --- INLINE COMMENTS LOGIC ---
-        const cList = document.getElementById('inline-comments-list');
-        const cInput = document.getElementById('c-input');
-        const cNameInput = document.getElementById('c-name-input');
-        const cTitle = document.getElementById('inline-comments-title');
-        
-        // Hàm này tạo HTML cho mỗi bình luận
-        function createCommentHTML(comment) {
-            const currentLikes = localLikes[comment.id] !== undefined 
-                                 ? localLikes[comment.id] 
-                                 : (comment.likes_count || 0);
-
-            let repliesHTML = '';
-            if (comment.replies && comment.replies.length > 0) {
-                const replyItems = comment.replies.map(reply => `
-                    <div class="reply-item">
-                        <div class="avatar" style="width: 30px; height: 30px; font-size: 12px;">${reply.username[0]}</div>
-                        <div class="c-content">
-                            <div class="c-name">${reply.username} <span style="font-weight: 400; color: var(--text-muted); margin-left: 5px;">(${reply.time || 'vừa xong'})</span></div>
-                            <div class="c-text">${reply.content}</div>
-                        </div>
-                    </div>
-                `).join('');
-                repliesHTML = `<div class="replies-container">${replyItems}</div>`;
-            }
-
-            return `
-                <div class="comment-item" id="comment-${comment.id}">
-                    <div class="avatar">${comment.username[0]}</div>
-                    <div class="c-content">
-                        <div class="c-name">${comment.username} <span style="font-weight: 400; color: var(--text-muted); margin-left: 5px;">(${comment.time || 'vừa xong'})</span></div>
-                        <div class="c-text">${comment.content}</div>
-                        
-                        <div class="c-actions">
-                            <button class="c-action-btn" onclick="handleLike(${comment.id})">
-                                <span class="material-icons">thumb_up_alt</span>
-                                Thích (<span id="like-count-${comment.id}">${currentLikes}</span>)
-                            </button>
-                            <button class="c-action-btn" onclick="openReplyForm(${comment.id}, '${comment.username}')">
-                                <span class="material-icons">reply</span>
-                                Trả lời
-                            </button>
-                        </div>
-                        
-                        <div class="reply-form" id="reply-form-${comment.id}">
-                            <input type="text" id="reply-name-${comment.id}" placeholder="Tên của bạn..." value="${localStorage.getItem('vnrp_username') || ''}">
-                            <input type="text" id="reply-input-${comment.id}" placeholder="Trả lời @${comment.username}...">
-                            <button class="btn btn-primary" style="padding: 5px 10px;" onclick="postComment(document.getElementById('reply-input-${comment.id}').value, document.getElementById('reply-name-${comment.id}').value, ${comment.id})">Gửi</button>
-                        </div>
-
-                        ${repliesHTML}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Hàm tạo ID mới (tăng dần so với ID lớn nhất hiện tại)
-        function getNextCommentId() {
-            let maxId = 0;
-            localComments.forEach(comment => {
-                maxId = Math.max(maxId, comment.id || 0);
-                if (comment.replies) {
-                    comment.replies.forEach(reply => {
-                        maxId = Math.max(maxId, reply.id || 0);
-                    });
+function postComment(content,cName,parentId=null){
+    const userContent=(content||cInput.value.trim());
+    const userName=(cName||cNameInput.value.trim());
+    if(!userContent||!userName){
+        if(parentId===null)return alert('Vui lòng nhập cả Tên và Nội dung.');
+        else return;
+    }
+    const newComment={id:getNextCommentId(),username:userName,content:userContent,time:'vừa xong',likes_count:0,replies:[]};
+    if(parentId===null){
+        localComments.push(newComment);
+        cInput.value='';
+    } else {
+        function addReplyRecursive(comments){
+            for(const c of comments){
+                if(c.id===parentId){
+                    c.replies.push(newComment);
+                    return true;
                 }
-            });
-            return maxId + 1;
-        }
-
-        // Gửi bình luận (ĐÃ CẬP NHẬT: Hoạt động không cần API)
-        function postComment(content, username, parentId = null) {
-            const userContent = (content || cInput.value.trim());
-            const userName = (username || cNameInput.value.trim());
-            
-            if (!userContent || !userName) {
-                if (parentId === null) {
-                    return alert('Vui lòng nhập cả Tên và Nội dung.');
-                } else {
-                    return;
+                if(c.replies && c.replies.length>0){
+                    if(addReplyRecursive(c.replies)) return true;
                 }
             }
-
-            const newComment = {
-                id: getNextCommentId(),
-                username: userName,
-                content: userContent,
-                time: "vừa xong",
-                likes_count: 0,
-                replies: []
-            };
-
-            if (parentId === null) {
-                // 1. Bình luận gốc: Thêm vào danh sách chính
-                localComments.push(newComment);
-                cInput.value = ''; // Xóa input chính
-            } else {
-                // 2. Trả lời: Thêm vào reply của bình luận cha
-                const parentComment = localComments.find(c => c.id === parentId);
-                if (parentComment) {
-                    parentComment.replies.push(newComment);
-                    // Ẩn form reply
-                    document.getElementById(`reply-form-${parentId}`).classList.remove('active');
-                }
-            }
-            
-            // Lưu tên người dùng (cho lần nhập tiếp theo)
-            localStorage.setItem('vnrp_username', userName);
-            
-            // Cập nhật giao diện
-            renderC(); 
+            return false;
         }
+        addReplyRecursive(localComments);
+        document.getElementById(`reply-form-${parentId}`).classList.remove('active');
+    }
+    localStorage.setItem('vnrp_username',userName);
+    renderComments();
+}
 
-        // Tải và hiển thị bình luận (ĐÃ CẬP NHẬT: Dùng dữ liệu giả lập/cục bộ)
-        async function renderC() {
-            // Dữ liệu giả lập ban đầu (Chỉ được dùng nếu localComments rỗng)
-            if (localComments.length === 0) {
-                const seed = [
-                    {id:1,username:"Pro",content:"Server xịn!",time:"2m", likes_count: 5, replies: []},
-                    {id:2,username:"Newbie",content:"Xin việc sao?",time:"5m", likes_count: 0, replies: [{id:3, username: "Mod", content: "Chat Discord nha!", time:"1m"}]}
-                ];
-                localComments = seed;
-            }
-            
-            // Tải tên người dùng đã lưu
-            const savedUsername = localStorage.getItem('vnrp_username');
-            if (savedUsername) {
-                cNameInput.value = savedUsername;
-            }
-            
-            cTitle.innerText = `Bình luận (${localComments.length})`;
-            cList.innerHTML = localComments.map(createCommentHTML).join('');
-            cList.scrollTop = cList.scrollHeight; // Cuộn xuống dưới cùng
-        }
-        
-        // HÀM LIKE: Tăng và lưu vào LocalStorage
-        function handleLike(commentId) {
-            const id = commentId.toString();
+function handleLike(id){localLikes[id]=(localLikes[id]||0)+1;localStorage.setItem('vnrp_local_likes',JSON.stringify(localLikes));renderComments();}
+function handleDislike(id){localDislikes[id]=(localDislikes[id]||0)+1;localStorage.setItem('vnrp_local_dislikes',JSON.stringify(localDislikes));renderComments();}
+function openReplyForm(id,name){document.querySelectorAll('.reply-form').forEach(f=>f.classList.remove('active'));document.getElementById(`reply-form-${id}`).classList.add('active');document.getElementById(`reply-input-${id}`).focus();}
 
-            localLikes[id] = (localLikes[id] || 0) + 1;
-            
-            localStorage.setItem('vnrp_local_likes', JSON.stringify(localLikes));
+// Modal guide
+const guideModal=document.getElementById('guide-modal');
+function closeGuide(){guideModal.style.display='none';guideModal.style.opacity=0;}
+document.getElementById('btn-guide').addEventListener('click',()=>{guideModal.style.display='flex';setTimeout(()=>guideModal.style.opacity=1,10);});
 
-            const likeCountEl = document.getElementById(`like-count-${id}`);
-            if (likeCountEl) {
-                likeCountEl.innerText = localLikes[id];
-            } else {
-                renderC();
-            }
-        }
+// Particles (nhẹ nhàng)
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+let w=canvas.width=window.innerWidth,h=canvas.height=window.innerHeight;
+window.addEventListener('resize',()=>{w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;});
+const particles=[];
+for(let i=0;i<60;i++){particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+1,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3});}
+function drawParticles(){ctx.clearRect(0,0,w,h);for(const p of particles){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='var(--particle-color)';ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;}requestAnimationFrame(drawParticles);}
+drawParticles();
 
-        // Mở form Trả lời (Reply)
-        function openReplyForm(commentId, username) {
-            document.querySelectorAll('.reply-form').forEach(form => form.classList.remove('active'));
-            
-            const replyForm = document.getElementById(`reply-form-${commentId}`);
-            if (replyForm) {
-                // Cập nhật giá trị tên đã lưu vào input tên của form reply
-                document.getElementById(`reply-name-${commentId}`).value = localStorage.getItem('vnrp_username') || '';
-                
-                replyForm.classList.toggle('active');
-                document.getElementById(`reply-input-${commentId}`).focus();
-            }
-        }
-
-        // Khởi tạo bình luận ngay khi tải trang
-        document.addEventListener('DOMContentLoaded', renderC);
-
-        // --- ANIMATION & PARTICLES ---
-        const observer = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('active')}),{threshold:0.1});
-        document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-        
-        const cvs=document.getElementById('particles'), ctx=cvs.getContext('2d');
-        let ps=[]; const rsz=()=>{cvs.width=innerWidth;cvs.height=innerHeight}; window.onresize=rsz; rsz();
-        for(let i=0;i<50;i++)ps.push({x:Math.random()*cvs.width,y:Math.random()*cvs.height,vx:(Math.random()-.5),vy:(Math.random()-.5)});
-        function loop(){
-            ctx.clearRect(0,0,cvs.width,cvs.height); ctx.fillStyle=getComputedStyle(html).getPropertyValue('--particle-color');
-            ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cvs.width)p.vx*=-1;if(p.y<0||p.y>cvs.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,2,0,Math.PI*2);ctx.fill()});
-            requestAnimationFrame(loop);
-        }
-        loop();
-
-        // Chức năng nút Hướng Dẫn
-        const modal = document.getElementById('guide-modal');
-        document.getElementById('btn-guide').addEventListener('click', ()=>{
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('active'); }, 10);
-        });
-        function closeGuide(){
-            modal.classList.remove('active');
-            setTimeout(() => { modal.style.display = 'none'; }, 300);
-        }
-    </script>
+// Reveal on scroll
+function reveal(){document.querySelectorAll('.reveal').forEach(el=>{const top=el.getBoundingClientRect().top;if(top<window.innerHeight-50){el.classList.add('active');}});}
+window.addEventListener('scroll',reveal);
+renderComments();
+</script>
 </body>
 </html>
